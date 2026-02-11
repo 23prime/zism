@@ -39,8 +39,8 @@ impl std::fmt::Display for Action {
 pub fn available_actions(has_sessions: bool) -> Vec<Action> {
     if has_sessions {
         vec![
-            Action::Create,
             Action::CreateWithDir,
+            Action::Create,
             Action::Attach,
             Action::Delete,
         ]
@@ -260,8 +260,8 @@ mod tests {
         assert_eq!(
             actions,
             vec![
-                Action::Create,
                 Action::CreateWithDir,
+                Action::Create,
                 Action::Attach,
                 Action::Delete,
             ]
