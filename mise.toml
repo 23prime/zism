@@ -27,12 +27,12 @@ alias = "s"
 
 [tasks.fix]
 description = "Fix all issues"
-depends = ["md-fix"]
+depends = ["md-fix", "rs-fix"]
 alias = "f"
 
 [tasks.check]
 description = "Check for all issues"
-depends = ["md-check", "gh-check"]
+depends = ["md-check", "gh-check", "rs-check"]
 alias = "c"
 
 [tasks.fix-and-check]
