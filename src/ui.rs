@@ -44,6 +44,7 @@ pub fn select_action(has_sessions: bool) -> Result<Action> {
     let options = available_actions(has_sessions);
     let action = Select::new("Select an action:", options)
         .with_render_config(render_config())
+        .with_vim_mode(true)
         .prompt()?;
     Ok(action)
 }
@@ -54,6 +55,7 @@ pub fn select_session(sessions: &[String]) -> Result<String> {
     }
     let session = Select::new("Select a session:", sessions.to_vec())
         .with_render_config(render_config())
+        .with_vim_mode(true)
         .prompt()?;
     Ok(session)
 }
@@ -64,6 +66,7 @@ pub fn select_session_optional(sessions: &[String]) -> Result<Option<String>> {
     }
     let answer = Select::new("Select a session:", sessions.to_vec())
         .with_render_config(render_config())
+        .with_vim_mode(true)
         .prompt_skippable()?;
     Ok(answer)
 }
