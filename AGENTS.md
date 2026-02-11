@@ -17,7 +17,7 @@ zism (Zellij Interactive Session Manager) is a CLI tool for interactively managi
 It runs outside of Zellij sessions and provides interactive create, attach, and delete operations.
 
 - Language: Rust (edition 2024)
-- No argument parser needed. Run simply as `zism` for a purely interactive CLI
+- Uses `clap` (derive) for CLI argument parsing (e.g. `--page-size`)
 
 ### Architecture
 
@@ -31,6 +31,7 @@ src/
 ### Key dependencies
 
 - `anyhow` - Error handling
+- `clap` - CLI argument parsing (derive feature)
 - `inquire` - Interactive prompts
 
 ## Development

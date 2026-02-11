@@ -214,11 +214,12 @@ impl Autocomplete for DirCompleter {
     }
 }
 
-pub fn input_directory() -> Result<PathBuf> {
+pub fn input_directory(page_size: usize) -> Result<PathBuf> {
     let home = PathBuf::from(std::env::var("HOME").unwrap_or_default());
     let input = Text::new("Directory (TAB to complete):")
         .with_render_config(render_config())
         .with_autocomplete(DirCompleter::new(home.clone()))
+        .with_page_size(page_size)
         .with_validator(|input: &str| {
             if input.trim().is_empty() {
                 Ok(Validation::Invalid(

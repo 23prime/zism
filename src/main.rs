@@ -2,12 +2,20 @@ mod ui;
 mod zellij;
 
 use anyhow::Result;
+use clap::Parser;
+
+#[derive(Parser)]
+struct Args {
+    /// Number of candidates to display at once
+    #[arg(long, default_value_t = 24)]
+    page_size: usize,
+}
 
 fn is_inside_zellij() -> bool {
     std::env::var("ZELLIJ_SESSION_NAME").is_ok()
 }
 
-fn run() -> Result<()> {
+fn run(args: &Args) -> Result<()> {
     if is_inside_zellij() {
         eprintln!("Already inside a Zellij session. Please run zism from outside Zellij.");
         std::process::exit(1);
@@ -22,7 +30,7 @@ fn run() -> Result<()> {
             zellij::create_session(&name)?;
         }
         ui::Action::CreateWithDir => {
-            let cwd = ui::input_directory()?;
+            let cwd = ui::input_directory(args.page_size)?;
             let name = cwd
                 .file_name()
                 .map(|n| n.to_string_lossy().to_string())
@@ -50,7 +58,8 @@ fn run() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    run()
+    let args = Args::parse();
+    run(&args)
 }
 
 #[cfg(test)]
