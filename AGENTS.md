@@ -24,6 +24,7 @@ It runs outside of Zellij sessions and provides interactive create, attach, and 
 ```txt
 src/
 ├── main.rs      # Entry point and main flow
+├── guake.rs     # Guake terminal integration (tab renaming)
 ├── zellij.rs    # Zellij command wrapper (parsing, arg building, execution)
 └── ui.rs        # Interactive prompts using inquire (Action enum, selection, input)
 ```
@@ -65,3 +66,4 @@ mise run rs-check   # includes cargo test
   - `parse_sessions`, `build_*_args`: Command output parsing and argument construction
   - `available_actions`: Action candidates based on session availability
   - `is_inside_zellij`: Check if running inside a Zellij session
+  - `is_inside_guake`: Check if running inside a Guake terminal

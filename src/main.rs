@@ -1,3 +1,4 @@
+mod guake;
 mod ui;
 mod zellij;
 
@@ -9,6 +10,10 @@ struct Args {
     /// Number of candidates to display at once
     #[arg(long, default_value_t = 24)]
     page_size: usize,
+
+    /// Rename Guake tab to session name on create/attach
+    #[arg(long)]
+    guake: bool,
 }
 
 fn is_inside_zellij() -> bool {
@@ -27,6 +32,9 @@ fn run(args: &Args) -> Result<()> {
     match ui::select_action(has_sessions)? {
         ui::Action::Create => {
             let name = ui::input_session_name()?;
+            if args.guake && guake::is_inside_guake() {
+                guake::rename_tab(&name)?;
+            }
             zellij::create_session(&name)?;
         }
         ui::Action::CreateWithDir => {
@@ -35,10 +43,16 @@ fn run(args: &Args) -> Result<()> {
                 .file_name()
                 .map(|n| n.to_string_lossy().to_string())
                 .unwrap_or_default();
+            if args.guake && guake::is_inside_guake() {
+                guake::rename_tab(&name)?;
+            }
             zellij::create_session_with_dir(&name, &cwd)?;
         }
         ui::Action::Attach => {
             let session = ui::select_session(&sessions)?;
+            if args.guake && guake::is_inside_guake() {
+                guake::rename_tab(&session)?;
+            }
             zellij::attach_session(&session)?;
         }
         ui::Action::Delete => loop {
