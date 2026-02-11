@@ -95,3 +95,12 @@ run = "cargo build --release"
 [tasks.rs-clean]
 description = "Clean Rust build artifacts"
 run = "cargo clean"
+
+# Release
+[tasks.tag]
+description = "Create release tag from Cargo.toml version"
+run = "./create-release-tag.sh"
+
+[tasks.tag-push]
+description = "Push release tags to remote"
+run = "git push --follow-tags"
