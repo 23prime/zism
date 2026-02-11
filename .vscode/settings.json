@@ -6,7 +6,7 @@
   },
 
   // Dictionary for spell checker
-  "cSpell.words": ["shellcheck"],
+  "cSpell.words": ["shellcheck", "zism"],
 
   // Rust
   "[rust]": {
