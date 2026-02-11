@@ -6,6 +6,7 @@ use anyhow::Result;
 use clap::Parser;
 
 #[derive(Parser)]
+#[command(version)]
 struct Args {
     /// Number of candidates to display at once
     #[arg(long, default_value_t = 24)]
