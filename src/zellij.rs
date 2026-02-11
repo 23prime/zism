@@ -54,6 +54,14 @@ pub fn create_session(name: &str) -> Result<()> {
     bail!("Failed to exec zellij: {err}");
 }
 
+pub fn create_session_with_dir(name: &str, cwd: &std::path::Path) -> Result<()> {
+    let err = Command::new("zellij")
+        .current_dir(cwd)
+        .args(build_create_args(name))
+        .exec();
+    bail!("Failed to exec zellij: {err}");
+}
+
 /// Attaches to an existing Zellij session via `Command::exec()`, which
 /// replaces the current process with Zellij on success. This means the
 /// function never returns `Ok(())` — it only returns `Err` if the exec

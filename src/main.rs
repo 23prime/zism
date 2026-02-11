@@ -21,6 +21,14 @@ fn run() -> Result<()> {
             let name = ui::input_session_name()?;
             zellij::create_session(&name)?;
         }
+        ui::Action::CreateWithDir => {
+            let cwd = ui::input_directory()?;
+            let name = cwd
+                .file_name()
+                .map(|n| n.to_string_lossy().to_string())
+                .unwrap_or_default();
+            zellij::create_session_with_dir(&name, &cwd)?;
+        }
         ui::Action::Attach => {
             let session = ui::select_session(&sessions)?;
             zellij::attach_session(&session)?;
