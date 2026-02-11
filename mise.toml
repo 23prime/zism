@@ -56,3 +56,42 @@ alias = "mc"
 description = "Check GitHub Actions workflows"
 run = "actionlint .github/workflows/*.yml"
 alias = "ghc"
+
+# Rust
+[tasks.rs-install]
+description = "Install Rust dependencies"
+run = "cargo fetch"
+
+[tasks.rs-fix]
+description = "Fix Rust code"
+run = [
+  "cargo clippy --all-targets --all-features --no-deps --fix --allow-dirty",
+  "cargo fmt",
+]
+alias = "rf"
+
+[tasks.rs-check]
+description = "Check Rust code"
+run = [
+  "cargo clippy --all-targets --all-features --no-deps",
+  "cargo fmt -- --check",
+  "cargo test -- --nocapture",
+]
+alias = "rc"
+
+[tasks.rs-run]
+description = "Run Rust application"
+run = "cargo run"
+alias = "rr"
+
+[tasks.rs-build]
+description = "Build Rust application"
+run = "cargo build"
+
+[tasks.rs-build-release]
+description = "Build Rust application in release mode"
+run = "cargo build --release"
+
+[tasks.rs-clean]
+description = "Clean Rust build artifacts"
+run = "cargo clean"
