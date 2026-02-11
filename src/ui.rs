@@ -41,6 +41,14 @@ pub fn select_session(sessions: &[String]) -> Result<String> {
     Ok(session)
 }
 
+pub fn select_session_optional(sessions: &[String]) -> Result<Option<String>> {
+    if sessions.is_empty() {
+        return Ok(None);
+    }
+    let answer = Select::new("Select a session:", sessions.to_vec()).prompt_skippable()?;
+    Ok(answer)
+}
+
 pub fn input_session_name() -> Result<String> {
     let name = Text::new("Enter new session name:")
         .with_validator(|input: &str| Ok(validate_session_name(input)))
@@ -88,5 +96,11 @@ mod tests {
     fn available_actions_without_sessions_returns_create_only() {
         let actions = available_actions(false);
         assert_eq!(actions, vec![Action::Create]);
+    }
+
+    #[test]
+    fn select_session_optional_returns_none_when_empty() {
+        let result = select_session_optional(&[]).unwrap();
+        assert_eq!(result, None);
     }
 }

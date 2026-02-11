@@ -25,11 +25,17 @@ fn run() -> Result<()> {
             let session = ui::select_session(&sessions)?;
             zellij::attach_session(&session)?;
         }
-        ui::Action::Delete => {
-            let session = ui::select_session(&sessions)?;
+        ui::Action::Delete => loop {
+            let sessions = zellij::list_sessions()?;
+            if sessions.is_empty() {
+                break;
+            }
+            let Some(session) = ui::select_session_optional(&sessions)? else {
+                break;
+            };
             zellij::delete_session(&session)?;
             println!("Deleted session '{session}'");
-        }
+        },
     }
 
     Ok(())
