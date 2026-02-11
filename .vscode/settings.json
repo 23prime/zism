@@ -6,5 +6,14 @@
   },
 
   // Dictionary for spell checker
-  "cSpell.words": ["shellcheck"]
+  "cSpell.words": ["shellcheck"],
+
+  // Rust
+  "[rust]": {
+    "editor.formatOnSave": true
+  },
+  "rust-analyzer.checkOnSave": true,
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.check.features": "all",
+  "rust-analyzer.check.allTargets": true
 }
