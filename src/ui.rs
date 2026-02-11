@@ -45,7 +45,7 @@ pub fn available_actions(has_sessions: bool) -> Vec<Action> {
             Action::Delete,
         ]
     } else {
-        vec![Action::Create, Action::CreateWithDir]
+        vec![Action::CreateWithDir, Action::Create]
     }
 }
 
@@ -272,7 +272,7 @@ mod tests {
     #[test]
     fn available_actions_without_sessions_returns_create_and_create_with_dir() {
         let actions = available_actions(false);
-        assert_eq!(actions, vec![Action::Create, Action::CreateWithDir]);
+        assert_eq!(actions, vec![Action::CreateWithDir, Action::Create]);
     }
 
     #[test]
