@@ -1,3 +1,4 @@
+mod banner;
 mod guake;
 mod ui;
 mod zellij;
@@ -15,6 +16,14 @@ struct Args {
     /// Rename Guake tab to session name on create/attach
     #[arg(long)]
     guake: bool,
+
+    /// Print banner and exit
+    #[arg(long)]
+    banner: bool,
+
+    /// Suppress banner display
+    #[arg(long)]
+    no_banner: bool,
 }
 
 fn is_inside_zellij() -> bool {
@@ -22,6 +31,14 @@ fn is_inside_zellij() -> bool {
 }
 
 fn run(args: &Args) -> Result<()> {
+    if !args.no_banner {
+        banner::print_banner();
+    }
+
+    if args.banner {
+        return Ok(());
+    }
+
     if is_inside_zellij() {
         eprintln!("Already inside a Zellij session. Please run zism from outside Zellij.");
         std::process::exit(1);
