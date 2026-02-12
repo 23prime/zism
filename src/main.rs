@@ -1,3 +1,4 @@
+mod action;
 mod banner;
 mod guake;
 mod ui;
@@ -5,6 +6,8 @@ mod zellij;
 
 use anyhow::Result;
 use clap::Parser;
+
+use action::Action;
 
 #[derive(Parser)]
 #[command(version)]
@@ -47,16 +50,18 @@ fn run(args: &Args) -> Result<()> {
     let sessions = zellij::list_sessions()?;
     let has_sessions = !sessions.is_empty();
 
-    match ui::select_action(has_sessions)? {
-        ui::Action::Create => {
-            let name = ui::input_session_name()?;
+    let action = ui::select_action(has_sessions)?;
+
+    match action {
+        Action::Create => {
+            let name = ui::input_session_name(action)?;
             if args.guake && guake::is_inside_guake() {
                 guake::rename_tab(&name)?;
             }
             zellij::create_session(&name)?;
         }
-        ui::Action::CreateWithDir => {
-            let cwd = ui::input_directory(args.page_size)?;
+        Action::CreateWithDir => {
+            let cwd = ui::input_directory(args.page_size, action)?;
             let name = cwd
                 .file_name()
                 .map(|n| n.to_string_lossy().to_string())
@@ -66,19 +71,19 @@ fn run(args: &Args) -> Result<()> {
             }
             zellij::create_session_with_dir(&name, &cwd)?;
         }
-        ui::Action::Attach => {
-            let session = ui::select_session(&sessions)?;
+        Action::Attach => {
+            let session = ui::select_session(&sessions, action)?;
             if args.guake && guake::is_inside_guake() {
                 guake::rename_tab(&session)?;
             }
             zellij::attach_session(&session)?;
         }
-        ui::Action::Delete => loop {
+        Action::Delete => loop {
             let sessions = zellij::list_sessions()?;
             if sessions.is_empty() {
                 break;
             }
-            let Some(session) = ui::select_session_optional(&sessions)? else {
+            let Some(session) = ui::select_session_optional(&sessions, action)? else {
                 break;
             };
             zellij::delete_session(&session)?;
