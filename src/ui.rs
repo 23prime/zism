@@ -5,6 +5,8 @@ use inquire::ui::{Attributes, Color, RenderConfig, StyleSheet};
 use inquire::validator::Validation;
 use inquire::{Autocomplete, CustomUserError, Select, Text};
 
+use crate::action::Action;
+
 fn render_config() -> RenderConfig<'static> {
     RenderConfig {
         prompt: StyleSheet::new().with_attr(Attributes::BOLD),
@@ -14,25 +16,6 @@ fn render_config() -> RenderConfig<'static> {
                 .with_bg(Color::LightCyan),
         ),
         ..RenderConfig::default()
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Action {
-    Create,
-    CreateWithDir,
-    Attach,
-    Delete,
-}
-
-impl std::fmt::Display for Action {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Action::Create => write!(f, "Create new session"),
-            Action::CreateWithDir => write!(f, "Create new session with directory"),
-            Action::Attach => write!(f, "Attach to session"),
-            Action::Delete => write!(f, "Delete session"),
-        }
     }
 }
 
@@ -58,31 +41,31 @@ pub fn select_action(has_sessions: bool) -> Result<Action> {
     Ok(action)
 }
 
-pub fn select_session(sessions: &[String]) -> Result<String> {
+pub fn select_session(sessions: &[String], action: Action) -> Result<String> {
     if sessions.is_empty() {
         bail!("No sessions available to select.");
     }
     let session = Select::new("Select a session:", sessions.to_vec())
-        .with_render_config(render_config())
+        .with_render_config(action.render_config())
         .with_vim_mode(true)
         .prompt()?;
     Ok(session)
 }
 
-pub fn select_session_optional(sessions: &[String]) -> Result<Option<String>> {
+pub fn select_session_optional(sessions: &[String], action: Action) -> Result<Option<String>> {
     if sessions.is_empty() {
         return Ok(None);
     }
     let answer = Select::new("Select a session:", sessions.to_vec())
-        .with_render_config(render_config())
+        .with_render_config(action.render_config())
         .with_vim_mode(true)
         .prompt_skippable()?;
     Ok(answer)
 }
 
-pub fn input_session_name() -> Result<String> {
+pub fn input_session_name(action: Action) -> Result<String> {
     let name = Text::new("Enter new session name:")
-        .with_render_config(render_config())
+        .with_render_config(action.render_config())
         .with_validator(|input: &str| Ok(validate_session_name(input)))
         .prompt()?;
     Ok(name)
@@ -214,10 +197,10 @@ impl Autocomplete for DirCompleter {
     }
 }
 
-pub fn input_directory(page_size: usize) -> Result<PathBuf> {
+pub fn input_directory(page_size: usize, action: Action) -> Result<PathBuf> {
     let home = PathBuf::from(std::env::var("HOME").unwrap_or_default());
     let input = Text::new("Directory (TAB to complete):")
-        .with_render_config(render_config())
+        .with_render_config(action.render_config())
         .with_autocomplete(DirCompleter::new(home.clone()))
         .with_page_size(page_size)
         .with_validator(|input: &str| {
@@ -241,21 +224,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn action_display_create() {
-        assert_eq!(Action::Create.to_string(), "Create new session");
-    }
-
-    #[test]
-    fn action_display_attach() {
-        assert_eq!(Action::Attach.to_string(), "Attach to session");
-    }
-
-    #[test]
-    fn action_display_delete() {
-        assert_eq!(Action::Delete.to_string(), "Delete session");
-    }
-
-    #[test]
     fn available_actions_with_sessions_returns_all() {
         let actions = available_actions(true);
         assert_eq!(
@@ -277,7 +245,7 @@ mod tests {
 
     #[test]
     fn select_session_optional_returns_none_when_empty() {
-        let result = select_session_optional(&[]).unwrap();
+        let result = select_session_optional(&[], Action::Delete).unwrap();
         assert_eq!(result, None);
     }
 
