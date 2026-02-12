@@ -1,0 +1,7 @@
+zism
+guake
+clippy
+nocapture
+rustup
+softprops
+dtolnay
