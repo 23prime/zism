@@ -18,11 +18,11 @@ struct Args {
     guake: bool,
 
     /// Print banner and exit
-    #[arg(long)]
+    #[arg(long, conflicts_with = "no_banner")]
     banner: bool,
 
     /// Suppress banner display
-    #[arg(long)]
+    #[arg(long, conflicts_with = "banner")]
     no_banner: bool,
 }
 
