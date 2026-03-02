@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 anyhow = "1.0.102"
 clap = { version = "4", features = ["derive"] }
-inquire = "0.9.3"
+inquire = "0.9.4"
 
 [dev-dependencies]
 serial_test = "3"
