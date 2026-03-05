@@ -33,6 +33,17 @@ pub fn available_actions(has_sessions: bool) -> Vec<Action> {
     }
 }
 
+pub fn print_sessions(sessions: &[String]) {
+    if sessions.is_empty() {
+        return;
+    }
+    println!("Active sessions:");
+    for s in sessions {
+        println!("- {s}");
+    }
+    println!();
+}
+
 pub fn select_action(has_sessions: bool) -> Result<Action> {
     let options = available_actions(has_sessions);
     let action = Select::new("Select an action:", options)
