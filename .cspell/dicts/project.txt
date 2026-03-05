@@ -5,3 +5,5 @@ nocapture
 rustup
 softprops
 dtolnay
+esac
+pipefail

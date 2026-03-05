@@ -30,7 +30,7 @@ cspell = "latest"
 # Global
 [tasks.setup]
 description = "Setup tools"
-run = ["mise trust -yq", "mise install", "lefthook install"]
+run = ["mise trust -yq", "mise install", "lefthook install", "cargo install cargo-edit"]
 alias = "s"
 
 [tasks.fix]
@@ -111,10 +111,6 @@ description = "Clean Rust build artifacts"
 run = "cargo clean"
 
 # Release
-[tasks.tag]
-description = "Create release tag from Cargo.toml version"
-run = "./create-release-tag.sh"
-
 [tasks.tag-push]
 description = "Push release tags to remote"
 run = "git push --follow-tags"
