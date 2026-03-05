@@ -47,48 +47,53 @@ fn run(args: &Args) -> Result<()> {
         std::process::exit(1);
     }
 
-    let sessions = zellij::list_sessions()?;
-    let has_sessions = !sessions.is_empty();
+    loop {
+        let sessions = zellij::list_sessions()?;
+        let has_sessions = !sessions.is_empty();
 
-    let action = ui::select_action(has_sessions)?;
+        let action = ui::select_action(has_sessions)?;
 
-    match action {
-        Action::Create => {
-            let name = ui::input_session_name(action)?;
-            if args.guake && guake::is_inside_guake() {
-                guake::rename_tab(&name)?;
-            }
-            zellij::create_session(&name)?;
-        }
-        Action::CreateWithDir => {
-            let cwd = ui::input_directory(args.page_size, action)?;
-            let name = cwd
-                .file_name()
-                .map(|n| n.to_string_lossy().to_string())
-                .unwrap_or_default();
-            if args.guake && guake::is_inside_guake() {
-                guake::rename_tab(&name)?;
-            }
-            zellij::create_session_with_dir(&name, &cwd)?;
-        }
-        Action::Attach => {
-            let session = ui::select_session(&sessions, action)?;
-            if args.guake && guake::is_inside_guake() {
-                guake::rename_tab(&session)?;
-            }
-            zellij::attach_session(&session)?;
-        }
-        Action::Delete => loop {
-            let sessions = zellij::list_sessions()?;
-            if sessions.is_empty() {
+        match action {
+            Action::Create => {
+                let name = ui::input_session_name(action)?;
+                if args.guake && guake::is_inside_guake() {
+                    guake::rename_tab(&name)?;
+                }
+                zellij::create_session(&name)?;
                 break;
             }
-            let Some(session) = ui::select_session_optional(&sessions, action)? else {
+            Action::CreateWithDir => {
+                let cwd = ui::input_directory(args.page_size, action)?;
+                let name = cwd
+                    .file_name()
+                    .map(|n| n.to_string_lossy().to_string())
+                    .unwrap_or_default();
+                if args.guake && guake::is_inside_guake() {
+                    guake::rename_tab(&name)?;
+                }
+                zellij::create_session_with_dir(&name, &cwd)?;
                 break;
-            };
-            zellij::delete_session(&session)?;
-            println!("Deleted session '{session}'");
-        },
+            }
+            Action::Attach => {
+                let session = ui::select_session(&sessions, action)?;
+                if args.guake && guake::is_inside_guake() {
+                    guake::rename_tab(&session)?;
+                }
+                zellij::attach_session(&session)?;
+                break;
+            }
+            Action::Delete => loop {
+                let sessions = zellij::list_sessions()?;
+                if sessions.is_empty() {
+                    break;
+                }
+                let Some(session) = ui::select_session_optional(&sessions, action)? else {
+                    break;
+                };
+                zellij::delete_session(&session)?;
+                println!("Deleted session '{session}'");
+            },
+        }
     }
 
     Ok(())
