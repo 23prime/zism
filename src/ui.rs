@@ -26,9 +26,10 @@ pub fn available_actions(has_sessions: bool) -> Vec<Action> {
             Action::Create,
             Action::Attach,
             Action::Delete,
+            Action::Exit,
         ]
     } else {
-        vec![Action::CreateWithDir, Action::Create]
+        vec![Action::CreateWithDir, Action::Create, Action::Exit]
     }
 }
 
@@ -233,14 +234,18 @@ mod tests {
                 Action::Create,
                 Action::Attach,
                 Action::Delete,
+                Action::Exit,
             ]
         );
     }
 
     #[test]
-    fn available_actions_without_sessions_returns_create_and_create_with_dir() {
+    fn available_actions_without_sessions_returns_create_and_exit() {
         let actions = available_actions(false);
-        assert_eq!(actions, vec![Action::CreateWithDir, Action::Create]);
+        assert_eq!(
+            actions,
+            vec![Action::CreateWithDir, Action::Create, Action::Exit]
+        );
     }
 
     #[test]

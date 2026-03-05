@@ -6,6 +6,7 @@ pub enum Action {
     CreateWithDir,
     Attach,
     Delete,
+    Exit,
 }
 
 impl std::fmt::Display for Action {
@@ -15,6 +16,7 @@ impl std::fmt::Display for Action {
             Action::CreateWithDir => write!(f, "Create new session with directory"),
             Action::Attach => write!(f, "Attach to session"),
             Action::Delete => write!(f, "Delete session"),
+            Action::Exit => write!(f, "Exit"),
         }
     }
 }
@@ -25,6 +27,7 @@ impl Action {
             Action::Create | Action::CreateWithDir => Color::LightGreen,
             Action::Attach => Color::LightCyan,
             Action::Delete => Color::LightRed,
+            Action::Exit => Color::White,
         }
     }
 
@@ -33,6 +36,7 @@ impl Action {
             Action::Create | Action::CreateWithDir => Color::DarkGreen,
             Action::Attach => Color::DarkCyan,
             Action::Delete => Color::DarkRed,
+            Action::Exit => Color::DarkGrey,
         }
     }
 
@@ -76,6 +80,21 @@ mod tests {
     #[test]
     fn action_display_delete() {
         assert_eq!(Action::Delete.to_string(), "Delete session");
+    }
+
+    #[test]
+    fn action_display_exit() {
+        assert_eq!(Action::Exit.to_string(), "Exit");
+    }
+
+    #[test]
+    fn action_color_returns_white_for_exit() {
+        assert_eq!(Action::Exit.color(), Color::White);
+    }
+
+    #[test]
+    fn action_highlight_color_returns_dark_grey_for_exit() {
+        assert_eq!(Action::Exit.highlight_color(), Color::DarkGrey);
     }
 
     #[test]

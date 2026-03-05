@@ -93,6 +93,10 @@ fn run(args: &Args) -> Result<()> {
                 zellij::delete_session(&session)?;
                 println!("Deleted session '{session}'");
             },
+            Action::Exit => {
+                println!("See you next session!");
+                break;
+            }
         }
     }
 
