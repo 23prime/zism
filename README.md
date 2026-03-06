@@ -5,14 +5,14 @@ Zellij Interactive Session Manager.
 ## Installation
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/23prime/zism/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/23prime/zism/latest/install.sh | sh
 ```
 
 By default, the binary is installed to `~/.local/bin/`.
 To change the install directory, set `INSTALL_DIR`:
 
 ```sh
-INSTALL_DIR=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/23prime/zism/main/install.sh | sh
+INSTALL_DIR=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/23prime/zism/latest/install.sh | sh
 ```
 
 ## Usage
