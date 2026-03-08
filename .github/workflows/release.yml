@@ -38,10 +38,23 @@ jobs:
       - name: Package binary
         run: tar czf zism-x86_64-unknown-linux-gnu.tar.gz -C target/x86_64-unknown-linux-gnu/release zism
 
+      - name: Generate checksum
+        run: |
+          if command -v sha256sum >/dev/null 2>&1; then
+            sha256sum zism-x86_64-unknown-linux-gnu.tar.gz > zism-x86_64-unknown-linux-gnu.tar.gz.sha256
+          elif command -v shasum >/dev/null 2>&1; then
+            shasum -a 256 zism-x86_64-unknown-linux-gnu.tar.gz > zism-x86_64-unknown-linux-gnu.tar.gz.sha256
+          else
+            echo "Error: neither sha256sum nor shasum is available." >&2
+            exit 1
+          fi
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: zism-x86_64-unknown-linux-gnu.tar.gz
+          files: |
+            zism-x86_64-unknown-linux-gnu.tar.gz
+            zism-x86_64-unknown-linux-gnu.tar.gz.sha256
           generate_release_notes: true
 
       - name: Update latest tag

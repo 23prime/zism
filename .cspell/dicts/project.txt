@@ -6,4 +6,6 @@ rustup
 softprops
 dtolnay
 esac
+elif
 pipefail
+shasum
