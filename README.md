@@ -15,6 +15,18 @@ To change the install directory, set `INSTALL_DIR`:
 INSTALL_DIR=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/23prime/zism/latest/install.sh | sh
 ```
 
+## Uninstallation
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/23prime/zism/latest/uninstall.sh | sh
+```
+
+To change the directory to uninstall from, set `INSTALL_DIR`:
+
+```sh
+INSTALL_DIR=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/23prime/zism/latest/uninstall.sh | sh
+```
+
 ## Usage
 
 Run `zism` outside of a Zellij session:
