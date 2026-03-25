@@ -4,8 +4,8 @@ clippy
 nocapture
 rustup
 softprops
-dtolnay
 esac
 elif
 pipefail
 shasum
+rustflags
