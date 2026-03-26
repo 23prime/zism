@@ -17,11 +17,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Install Rust
         uses: actions-rust-lang/setup-rust-toolchain@150fca883cd4034361b621bd4e6a9d34e5143606 # v1.15.4
         with:
           rustflags: ""
+          cache: false
 
       - name: Build release binary
         run: cargo build --release --target x86_64-unknown-linux-gnu
@@ -41,12 +44,13 @@ jobs:
           fi
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
-        with:
-          files: |
-            zism-x86_64-unknown-linux-gnu.tar.gz
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --generate-notes \
+            zism-x86_64-unknown-linux-gnu.tar.gz \
             zism-x86_64-unknown-linux-gnu.tar.gz.sha256
-          generate_release_notes: true
 
       - name: Update latest tag
         run: |
