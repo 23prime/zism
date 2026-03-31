@@ -16,6 +16,8 @@ on:
       - "Cargo.lock"
       - ".github/workflows/check-rust.yml"
 
+permissions: {}
+
 env:
   CARGO_TERM_COLOR: always
 
