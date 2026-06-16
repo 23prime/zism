@@ -9,3 +9,6 @@ elif
 pipefail
 shasum
 rustflags
+flate
+reqwest
+rustls
