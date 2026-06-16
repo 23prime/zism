@@ -1,6 +1,7 @@
 mod action;
 mod banner;
 mod guake;
+mod self_update;
 mod ui;
 mod zellij;
 
@@ -27,6 +28,10 @@ struct Args {
     /// Suppress banner display
     #[arg(long, conflicts_with = "banner")]
     no_banner: bool,
+
+    /// Update zism to the latest release
+    #[arg(long)]
+    self_update: bool,
 }
 
 fn is_inside_zellij() -> bool {
@@ -34,6 +39,10 @@ fn is_inside_zellij() -> bool {
 }
 
 fn run(args: &Args) -> Result<()> {
+    if args.self_update {
+        return self_update::self_update();
+    }
+
     if !args.no_banner {
         banner::print_banner();
     }
@@ -113,6 +122,12 @@ mod tests {
     use serial_test::serial;
 
     use super::*;
+
+    #[test]
+    fn self_update_flag_is_parsed() {
+        let args = Args::try_parse_from(["zism", "--self-update"]).unwrap();
+        assert!(args.self_update);
+    }
 
     #[test]
     #[serial]
