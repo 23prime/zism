@@ -149,11 +149,6 @@ run = "cargo build --release"
 description = "Clean Rust build artifacts"
 run = "cargo clean"
 
-# Release
-[tasks.tag-push]
-description = "Push release tags to remote"
-run = "git push --follow-tags"
-
 # mise lock
 [tasks.lock-fix]
 description = "Update mise.lock"

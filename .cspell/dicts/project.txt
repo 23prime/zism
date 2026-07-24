@@ -12,3 +12,4 @@ rustflags
 flate
 reqwest
 rustls
+oneline
