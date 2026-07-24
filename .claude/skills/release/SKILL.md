@@ -56,17 +56,10 @@ mise run release -- <patch|minor|major> -y
 1. Bump `Cargo.toml` / `Cargo.lock` via `cargo set-version`
 2. Commit `chore: bump version to v<X.Y.Z>`
 3. Create annotated tag `v<X.Y.Z>`
+4. Push the commit and tag to `origin`
 
 `-y` skips the interactive confirmation prompt — the confirmation with the user already
 happened in Step 1, so no need for a second, terminal-only confirmation here.
-
-It does **not** push. Push explicitly:
-
-```bash
-mise run tag-push
-```
-
-`mise/tasks/tag-push` runs `git push --follow-tags`, pushing the commit and tag to `origin`.
 
 ## Step 3 — Wait for CI to finish
 
