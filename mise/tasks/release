@@ -57,8 +57,14 @@ next_version="${major}.${minor}.${patch}"
 tag="v${next_version}"
 
 # Check if tag already exists before bumping
-if git rev-parse "$tag" >/dev/null 2>&1; then
+if [ -n "$(git tag -l "$tag")" ]; then
   printf "[ERROR] Tag '%s' already exists\n" "$tag" >&2
+  exit 1
+fi
+
+# Check for a clean working tree
+if ! git diff --quiet HEAD; then
+  printf "[ERROR] Working tree has uncommitted changes. Please commit or stash them first.\n" >&2
   exit 1
 fi
 
