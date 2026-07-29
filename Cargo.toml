@@ -12,4 +12,4 @@ inquire = "0.9.4"
 self_update = { version = "0.44", default-features = false, features = ["reqwest", "archive-tar", "archive-zip", "compression-flate2", "rustls"] }
 
 [dev-dependencies]
-serial_test = "3"
+serial_test = "4"
