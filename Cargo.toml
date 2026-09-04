@@ -9,7 +9,7 @@ authors = ["okkey"]
 anyhow = "1.0.102"
 clap = { version = "4", features = ["derive"] }
 inquire = "0.9.4"
-self_update = { version = "0.44", default-features = false, features = ["reqwest", "archive-tar", "archive-zip", "compression-flate2", "rustls"] }
+self_update = { version = "1.0", default-features = false, features = ["reqwest", "archive-tar", "archive-zip", "flate2", "rustls", "github"] }
 
 [dev-dependencies]
 serial_test = "4"
