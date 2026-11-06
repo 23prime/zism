@@ -63,8 +63,7 @@ happened in Step 1, so no need for a second, terminal-only confirmation here.
 
 ## Step 3 — Wait for CI to finish
 
-The pushed tag triggers `.github/workflows/release.yml`, which builds the Linux binary,
-generates a checksum, creates the GitHub Release, and moves the `latest` tag.
+The pushed tag triggers `.github/workflows/release.yml`, which builds the Linux and macOS binaries with checksums, then creates the GitHub Release and moves the `latest` tag.
 
 Get the run's database ID:
 
