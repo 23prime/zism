@@ -4,7 +4,6 @@ set -eu
 
 REPO="23prime/zism"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/.local/bin}"
-ASSET_NAME="zism-x86_64-unknown-linux-gnu.tar.gz"
 
 # Check required commands
 for cmd in curl tar; do
@@ -13,6 +12,17 @@ for cmd in curl tar; do
     exit 1
   fi
 done
+
+# Detect target platform
+case "$(uname -s)-$(uname -m)" in
+  Linux-x86_64) TARGET="x86_64-unknown-linux-gnu" ;;
+  Darwin-arm64) TARGET="aarch64-apple-darwin" ;;
+  *)
+    printf "[ERROR] Unsupported platform: %s %s\n" "$(uname -s)" "$(uname -m)" >&2
+    exit 1
+    ;;
+esac
+ASSET_NAME="zism-${TARGET}.tar.gz"
 
 # Detect SHA-256 tool
 if command -v sha256sum >/dev/null 2>&1; then
