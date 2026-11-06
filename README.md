@@ -4,6 +4,8 @@ Zellij Interactive Session Manager.
 
 ## Installation
 
+Supported platforms: Linux (x86_64) and macOS (Apple Silicon).
+
 ```sh
 curl -fsSL https://raw.githubusercontent.com/23prime/zism/latest/install.sh | sh
 ```
