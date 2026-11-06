@@ -14,11 +14,17 @@ for cmd in curl tar; do
 done
 
 # Detect target platform
-case "$(uname -s)-$(uname -m)" in
+os="$(uname -s)"
+arch="$(uname -m)"
+# Under Rosetta, uname -m reports x86_64 even on Apple Silicon
+if [ "$os" = "Darwin" ] && [ "$arch" = "x86_64" ] && [ "$(sysctl -n hw.optional.arm64 2>/dev/null)" = "1" ]; then
+  arch="arm64"
+fi
+case "${os}-${arch}" in
   Linux-x86_64) TARGET="x86_64-unknown-linux-gnu" ;;
   Darwin-arm64) TARGET="aarch64-apple-darwin" ;;
   *)
-    printf "[ERROR] Unsupported platform: %s %s\n" "$(uname -s)" "$(uname -m)" >&2
+    printf "[ERROR] Unsupported platform: %s %s\n" "$os" "$arch" >&2
     exit 1
     ;;
 esac
