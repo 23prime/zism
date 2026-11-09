@@ -56,6 +56,9 @@ mise run rs-build   # cargo build
 mise run check      # all checks (markdown, GitHub Actions, etc.)
 ```
 
+After merging or pulling `main`, run `mise install` if `mise.toml` changed.
+Otherwise the pre-commit hook fails with e.g. `zizmor: command not found`.
+
 ### Testing
 
 ```sh
